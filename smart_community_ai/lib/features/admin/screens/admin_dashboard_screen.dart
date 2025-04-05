@@ -44,8 +44,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: _titles[_currentIndex],
+      appBar: AppBar(
+        title: Text(_titles[_currentIndex]),
+        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

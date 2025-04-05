@@ -7,7 +7,6 @@ import 'package:smart_community_ai/core/models/user_model.dart';
 import 'package:smart_community_ai/core/providers/announcement_provider.dart';
 import 'package:smart_community_ai/core/providers/auth_provider.dart';
 import 'package:smart_community_ai/core/theme/app_colors.dart';
-import 'package:smart_community_ai/core/widgets/custom_app_bar.dart';
 import 'package:smart_community_ai/core/widgets/custom_button.dart';
 import 'package:smart_community_ai/core/widgets/custom_text_field.dart';
 import 'package:image_picker/image_picker.dart';
@@ -100,9 +99,16 @@ class _AdminAnnouncementsScreenState extends State<AdminAnnouncementsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Duyuru Yönetimi',
-        showBackButton: true,
+      appBar: AppBar(
+        title: const Text('Duyurular'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadAnnouncements,
+          ),
+        ],
       ),
       body: Column(
         children: [

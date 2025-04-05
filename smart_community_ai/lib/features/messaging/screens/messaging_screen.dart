@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_community_ai/core/providers/messaging_provider.dart';
 import 'package:smart_community_ai/core/providers/auth_provider.dart';
-import 'package:smart_community_ai/core/widgets/custom_app_bar.dart';
 import 'package:smart_community_ai/core/models/message_model.dart';
 import 'package:smart_community_ai/core/models/user_model.dart';
 import 'package:smart_community_ai/core/theme/app_colors.dart';
@@ -308,9 +307,8 @@ class _MessagingScreenState extends State<MessagingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: widget.contactName,
-        showBackButton: true,
+      appBar: AppBar(
+        title: Text(widget.contactName),
         actions: [
           IconButton(
             icon: const Icon(Icons.more_vert),

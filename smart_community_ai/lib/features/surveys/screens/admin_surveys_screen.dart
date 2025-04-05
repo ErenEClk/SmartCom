@@ -6,7 +6,6 @@ import 'package:smart_community_ai/core/models/survey_model.dart';
 import 'package:smart_community_ai/core/models/user_model.dart';
 import 'package:smart_community_ai/core/providers/survey_provider.dart';
 import 'package:smart_community_ai/core/providers/auth_provider.dart';
-import 'package:smart_community_ai/core/widgets/custom_app_bar.dart';
 import 'package:smart_community_ai/core/widgets/loading_indicator.dart';
 import 'package:smart_community_ai/core/widgets/custom_button.dart';
 import 'package:uuid/uuid.dart';
@@ -103,90 +102,93 @@ class _AdminSurveysScreenState extends State<AdminSurveysScreen> {
                 survey.description.toLowerCase().contains(_searchQuery.toLowerCase()))
             .toList();
 
-        return SafeArea(
-          child: Scaffold(
-            body: Column(
-              children: [
-                // Arama ve filtre
-                Padding(
-                  padding: EdgeInsets.all(16.w),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            hintText: 'Anket ara...',
-                            prefixIcon: const Icon(Icons.search),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Anketler'),
+            elevation: 0,
+            backgroundColor: Theme.of(context).primaryColor,
+          ),
+          body: Column(
+            children: [
+              // Arama ve filtre
+              Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Anket ara...',
+                          prefixIcon: const Icon(Icons.search),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              _searchQuery = value;
-                            });
-                          },
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value;
+                          });
+                        },
                       ),
-                      SizedBox(width: 8.w),
-                      IconButton(
-                        icon: const Icon(Icons.refresh),
-                        onPressed: _loadSurveys,
-                        tooltip: 'Yenile',
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 8.w),
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: _loadSurveys,
+                      tooltip: 'Yenile',
+                    ),
+                  ],
                 ),
+              ),
 
-                // Anket listesi
-                Expanded(
-                  child: surveyProvider.isLoading
-                      ? const Center(child: LoadingIndicator())
-                      : filteredSurveys.isEmpty
-                          ? Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.poll_outlined,
-                                    size: 64.sp,
-                                    color: Colors.grey,
+              // Anket listesi
+              Expanded(
+                child: surveyProvider.isLoading
+                    ? const Center(child: LoadingIndicator())
+                    : filteredSurveys.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.poll_outlined,
+                                  size: 64.sp,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  'Henüz anket bulunmuyor',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey[700],
                                   ),
-                                  SizedBox(height: 16.h),
-                                  Text(
-                                    'Henüz anket bulunmuyor',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey[700],
-                                    ),
-                                  ),
-                                  SizedBox(height: 24.h),
-                                  ElevatedButton.icon(
-                                    onPressed: _showAddSurveyDialog,
-                                    icon: const Icon(Icons.add),
-                                    label: const Text('Yeni Anket'),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : ListView.builder(
-                              padding: EdgeInsets.all(16.w),
-                              itemCount: filteredSurveys.length,
-                              itemBuilder: (context, index) {
-                                final survey = filteredSurveys[index];
-                                return _buildSurveyItem(survey);
-                              },
+                                ),
+                                SizedBox(height: 24.h),
+                                ElevatedButton.icon(
+                                  onPressed: _showAddSurveyDialog,
+                                  icon: const Icon(Icons.add),
+                                  label: const Text('Yeni Anket'),
+                                ),
+                              ],
                             ),
-                ),
-              ],
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: _showAddSurveyDialog,
-              child: const Icon(Icons.add),
-              tooltip: 'Anket Ekle',
-            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.all(16.w),
+                            itemCount: filteredSurveys.length,
+                            itemBuilder: (context, index) {
+                              final survey = filteredSurveys[index];
+                              return _buildSurveyItem(survey);
+                            },
+                          ),
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: _showAddSurveyDialog,
+            child: const Icon(Icons.add),
+            tooltip: 'Anket Ekle',
           ),
         );
       },

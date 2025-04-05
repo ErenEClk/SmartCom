@@ -21,6 +21,7 @@ import 'package:smart_community_ai/features/splash/screens/splash_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:smart_community_ai/core/providers/survey_provider.dart';
+import 'package:smart_community_ai/core/constants/api_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +32,33 @@ void main() async {
     
     // .env dosyasını yüklemeyi dene, bulunamazsa devam et
     try {
-      await dotenv.load(fileName: ".env");
-      print(".env dosyası başarıyla yüklendi");
+      // Birden fazla konumda .env dosyasını aramayı deneyelim
+      bool loaded = false;
+      
+      try {
+        await dotenv.load(fileName: ".env");
+        loaded = true;
+        print(".env dosyası ana dizinden başarıyla yüklendi");
+      } catch (e) {
+        print("Ana dizindeki .env dosyası yüklenemedi: $e");
+      }
+      
+      if (!loaded) {
+        try {
+          await dotenv.load(fileName: "assets/.env");
+          loaded = true;
+          print(".env dosyası assets/ dizininden başarıyla yüklendi");
+        } catch (e) {
+          print("assets/ dizinindeki .env dosyası yüklenemedi: $e");
+        }
+      }
+      
+      if (loaded) {
+        print("API URL: ${dotenv.env['API_URL']}");
+        print("Test Modu: ${dotenv.env['IS_TEST_MODE']}");
+      } else {
+        print(".env dosyası hiçbir konumda bulunamadı, varsayılan değerler kullanılacak");
+      }
     } catch (e) {
       print("Dotenv yükleme hatası: $e");
       print(".env dosyası bulunamadı, varsayılan değerler kullanılacak");
@@ -59,12 +85,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("MyApp build metodu çalıştı");
+    
+    // API URL ve test modu değerini doğrudan ApiConstants üzerinden al
+    final apiUrl = ApiConstants.baseUrl;
+    final isTestMode = ApiConstants.isTestMode;
+    
+    print("API URL: $apiUrl");
+    print("Test Modu: $isTestMode");
+    
     return MultiProvider(
       providers: [
         Provider<ApiService>(
           create: (_) {
             print("ApiService oluşturuluyor");
-            return ApiService(baseUrl: 'http://localhost:3000');
+            return ApiService(baseUrl: apiUrl);
           },
         ),
         Provider<AuthService>(
@@ -84,7 +118,7 @@ class MyApp extends StatelessWidget {
             print("AuthProvider oluşturuluyor");
             return AuthProvider(
               apiService: context.read<ApiService>(),
-              isTestMode: true,
+              isTestMode: isTestMode,
             );
           },
         ),
@@ -93,7 +127,7 @@ class MyApp extends StatelessWidget {
             print("PaymentProvider oluşturuluyor");
             return PaymentProvider(
               apiService: context.read<ApiService>(),
-              isTestMode: true,
+              isTestMode: isTestMode,
             );
           },
         ),
@@ -102,7 +136,7 @@ class MyApp extends StatelessWidget {
             print("AnnouncementProvider oluşturuluyor");
             return AnnouncementProvider(
               apiService: context.read<ApiService>(),
-              isTestMode: true,
+              isTestMode: isTestMode,
             );
           },
         ),
@@ -111,7 +145,7 @@ class MyApp extends StatelessWidget {
             print("NotificationProvider oluşturuluyor");
             return NotificationProvider(
               apiService: context.read<ApiService>(),
-              isTestMode: true,
+              isTestMode: isTestMode,
             );
           },
         ),
@@ -120,7 +154,7 @@ class MyApp extends StatelessWidget {
             print("IssueProvider oluşturuluyor");
             return IssueProvider(
               apiService: context.read<ApiService>(),
-              isTestMode: true,
+              isTestMode: isTestMode,
             );
           },
         ),
@@ -129,7 +163,7 @@ class MyApp extends StatelessWidget {
             print("SurveyProvider oluşturuluyor");
             return SurveyProvider(
               apiService: context.read<ApiService>(),
-              isTestMode: true,
+              isTestMode: isTestMode,
             );
           },
         ),

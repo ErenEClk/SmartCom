@@ -37,22 +37,36 @@ class _LoginScreenState extends State<LoginScreen> {
         authProvider.clearError();
       }
       
-      final success = await authProvider.login(
-        _emailController.text.trim(),
-        _passwordController.text,
-      );
+      try {
+        print('Login işlemi başlatılıyor: ${_emailController.text.trim()}');
+        final success = await authProvider.login(
+          _emailController.text.trim(),
+          _passwordController.text,
+        );
+        print('Login işlemi tamamlandı, sonuç: $success');
 
-      if (success && mounted) {
-        final user = authProvider.currentUser;
-        if (user != null && user.role == 'admin') {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            '/admin-dashboard',
-            (route) => false,
-          );
-        } else {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            '/dashboard',
-            (route) => false,
+        if (success && mounted) {
+          final user = authProvider.currentUser;
+          if (user != null && user.role == 'admin') {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              '/admin-dashboard',
+              (route) => false,
+            );
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              '/dashboard',
+              (route) => false,
+            );
+          }
+        } else if (mounted) {
+          // Hata mesajı authProvider üzerinden gösteriliyor
+          print('Login işlemi başarısız: ${authProvider.error}');
+        }
+      } catch (e) {
+        print('Login işlemi sırasında hata oluştu: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Giriş sırasında hata oluştu: $e')),
           );
         }
       }

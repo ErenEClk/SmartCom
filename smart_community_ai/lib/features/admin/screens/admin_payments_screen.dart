@@ -78,8 +78,10 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> with SingleTi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Ödeme Yönetimi',
+      appBar: AppBar(
+        title: const Text('Ödemeler'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
@@ -87,6 +89,8 @@ class _AdminPaymentsScreenState extends State<AdminPaymentsScreen> with SingleTi
             Tab(text: 'Bekleyen'),
             Tab(text: 'Ödenenler'),
           ],
+          indicatorColor: Colors.white,
+          labelColor: Colors.white,
         ),
       ),
       body: Column(

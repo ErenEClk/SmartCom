@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_community_ai/core/providers/auth_provider.dart';
 import 'package:smart_community_ai/core/utils/app_colors.dart';
-import 'package:smart_community_ai/core/widgets/custom_app_bar.dart';
 import 'package:smart_community_ai/core/widgets/custom_button.dart';
 import 'package:smart_community_ai/core/widgets/custom_text_field.dart';
 
@@ -44,9 +43,10 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Kullanıcı Yönetimi',
-        showBackButton: true,
+      appBar: AppBar(
+        title: const Text('Kullanıcılar'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         children: [

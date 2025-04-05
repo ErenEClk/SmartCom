@@ -54,14 +54,16 @@ class _AdminIssuesScreenState extends State<AdminIssuesScreen> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Arıza Yönetimi',
+      appBar: AppBar(
+        title: const Text('Arızalar'),
+        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          labelColor: AppColors.primary,
-          unselectedLabelColor: Colors.grey,
-          indicatorColor: AppColors.primary,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          indicatorColor: Colors.white,
           labelStyle: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.bold,

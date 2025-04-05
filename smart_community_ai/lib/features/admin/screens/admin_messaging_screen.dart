@@ -193,15 +193,22 @@ class _AdminMessagingScreenState extends State<AdminMessagingScreen> {
     return Consumer<MessagingProvider>(
       builder: (context, messagingProvider, child) {
         return Scaffold(
-          appBar: CustomAppBar(
-            title: _showChatArea ? _selectedUserName : 'Mesaj Yönetimi',
-            showBackButton: _showChatArea,
-            onBackPressed: _showChatArea ? () {
-              setState(() {
-                _showChatArea = false;
-                _selectedUserName = '';
-              });
-            } : null,
+          appBar: AppBar(
+            title: Text(_showChatArea ? _selectedUserName : 'Mesajlar'),
+            leading: _showChatArea 
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    setState(() {
+                      _showChatArea = false;
+                      _selectedUserName = '';
+                      _selectedUserId = '';
+                    });
+                  },
+                )
+              : null,
+            elevation: 0,
+            backgroundColor: Theme.of(context).primaryColor,
             actions: [
               if (!_showChatArea)
                 IconButton(
